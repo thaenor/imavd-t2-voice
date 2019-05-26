@@ -1,9 +1,13 @@
-//TODO: randomize this number within canvas borders
-//TODO: make canvas bigger
 import { fabric } from "fabric";
 
 // create a wrapper around native canvas element (with id="c")
 let canvas = new fabric.Canvas("c");
+const CANVAS_HEIGHT = 500;
+const CANVAS_WIDTH = 800;
+canvas.setHeight(CANVAS_HEIGHT);
+canvas.setWidth(CANVAS_WIDTH);
+canvas.backgroundColor = "white";
+
 let rectList = [];
 let circList = [];
 let triList = [];
@@ -41,7 +45,7 @@ triList.push(tri);
 canvas.add(rect);
 canvas.add(circ);
 canvas.add(tri);
-
+canvas.renderAll();
 //NOTA: Se quiserem testar a parte gráfica sem ter de usar comandos de voz chamem a função neste evento
 //document.querySelector("body").addEventListener("click", function(e) {});
 
@@ -64,7 +68,7 @@ function getObjectArray(descriptor) {
  * @param {String} color like "red", "green", "blue" - see Fabric documentation for color names
  */
 export function changeColor(target, color) {
-  if (target === "rectangle") {
+  if (target === "square") {
     rectList.forEach(element => {
       element.set("fill", color);
       canvas.renderAll();
@@ -88,6 +92,7 @@ export function changeColor(target, color) {
  * @param {String} orientation "up" "down" "left" "right"
  */
 export function moveElement(target, orientation) {
+  console.log(target, orientation);
   let figureList = getObjectArray(target);
   switch (orientation) {
     case "up":
@@ -96,7 +101,9 @@ export function moveElement(target, orientation) {
       });
       break;
     case "down":
-      //element.set("top", element.top + 5);
+      figureList.forEach(element => {
+        element.set("top", element.top + 5);
+      });
       break;
     case "right":
       figureList.forEach(element => {
@@ -104,7 +111,9 @@ export function moveElement(target, orientation) {
       });
       break;
     case "left":
-      //element.set("left", element.left - 5);
+      figureList.forEach(element => {
+        element.set("left", element.left - 5);
+      });
       break;
     default:
       break;
@@ -117,7 +126,7 @@ export function moveElement(target, orientation) {
  * @param {String} target type of element. "rectangle", "triangle", "circle"
  * @param {Integer} size how big or small to make the element (make the number positive or negative)
  */
-export function resizeElement(target, size) {
+function resizeElement(target, size) {
   let figureList = getObjectArray(target);
   if (target === "circle") {
     figureList.forEach(figure => {
@@ -132,41 +141,61 @@ export function resizeElement(target, size) {
   canvas.renderAll();
 }
 
+export function increase(target) {
+  resizeElement(target, 5);
+}
+
+export function decrease(target) {
+  resizeElement(target, -5);
+}
+
 /**
  * duplicates the element. Create a new of each element and add it to the array
  * @param {*} target type of element. "rectangle", "triangle", "circle"
  */
 export function duplicate(target) {
-  let newFigure;
-  if (target === "rectangle") {
-    newFigure = new fabric.Rect({
-      left: 100,
-      top: 100,
-      fill: "red",
-      width: 20,
-      height: 20
-    });
-    rectList.push(newFigure);
-  } else if (target === "triangle") {
-    newFigure = new fabric.Triangle({
-      left: 140,
-      top: 70,
-      fill: "blue",
-      width: 20,
-      height: 20
-    });
-    triList.push(newFigure);
-  } else if (target === "circle") {
-    newFigure = new fabric.Circle({
-      radius: 10,
-      left: 50,
-      top: 20,
-      fill: "violet",
-      width: 20,
-      height: 20
-    });
-    circList.push(newFigure);
+  let figureList = getObjectArray(target);
+
+  switch (target) {
+    case "square":
+      figureList.push(
+        new fabric.Rect({
+          left: Math.floor(Math.random() * CANVAS_WIDTH + 1),
+          top: Math.floor(Math.random() * CANVAS_HEIGHT + 1),
+          fill: "red",
+          width: 20,
+          height: 20
+        })
+      );
+      canvas.add(figureList[figureList.length - 1]);
+      break;
+    case "triangle":
+      figureList.push(
+        new fabric.Triangle({
+          left: Math.floor(Math.random() * CANVAS_WIDTH + 1),
+          top: Math.floor(Math.random() * CANVAS_HEIGHT + 1),
+          fill: "blue",
+          width: 20,
+          height: 20
+        })
+      );
+      canvas.add(figureList[figureList.length - 1]);
+      break;
+    case "circle":
+      figureList.push(
+        new fabric.Circle({
+          radius: Math.floor(Math.random() * 30 + 5),
+          left: Math.floor(Math.random() * CANVAS_WIDTH + 1),
+          top: Math.floor(Math.random() * CANVAS_HEIGHT + 1),
+          fill: "violet",
+          width: 20,
+          height: 20
+        })
+      );
+      canvas.add(figureList[figureList.length - 1]);
+      break;
+    default:
+      break;
   }
-  canvas.add(newFigure);
   canvas.renderAll();
 }

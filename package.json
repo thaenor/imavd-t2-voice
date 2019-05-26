@@ -1,7 +1,7 @@
 {
   "name": "speech-recognition-exercice",
   "version": "1.0.0",
-  "description": "",
+  "description": "playing with speech recognition API",
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open",

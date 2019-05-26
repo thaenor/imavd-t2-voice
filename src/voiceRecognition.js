@@ -1,10 +1,5 @@
 import * as gfx from "./graphics";
-import {
-  colorRegEx,
-  shapesRegEx,
-  commandsRegEx,
-  directionsRegEx
-} from "./expressions";
+import * as recognizers from "./expressions";
 import { colors } from "./colors";
 
 const SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
@@ -31,7 +26,7 @@ speechRecognitionList.addFromString(commandGrammar, 1);
 speechRecognitionList.addFromString(directionGrammar, 1);
 speechRecognitionList.addFromString(shapeGrammar, 1);
 recognition.grammars = speechRecognitionList;
-recognition.continuous = false; //default is false
+recognition.continuous = true; //default is false
 recognition.lang = "en-US";
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
@@ -65,36 +60,49 @@ recognition.onresult = function(event) {
   // We then return the transcript property of the SpeechRecognitionAlternative object
 
   let last = event.results.length - 1;
-  let voiceCommand = event.results[last][0].transcript;
-
+  let voiceCommand = event.results[last][0].transcript.toLowerCase();
+  const arrayOfWords = voiceCommand.split(" ");
   diagnostic.textContent = "Result received: " + voiceCommand + ".";
 
-  let MARTELADA = ` ${voiceCommand} `;
-  let color = colorRegEx.exec(MARTELADA);
-  let command = commandsRegEx.exec(MARTELADA);
-  let shape = shapesRegEx.exec(MARTELADA);
-  let direction = directionsRegEx.exec(MARTELADA);
-
-  color != null ? (color = color[0]) : null;
-  command != null ? (command = command[0]) : null;
-  shape != null ? (shape = shape[0]) : null;
-  direction != null ? (direction = direction[0]) : null;
-
-  //DEBUG
-  console.log(MARTELADA);
-  console.log("command", command);
-  console.log("shape", shape);
-  console.log("color", color);
-  console.log("direction", direction);
-
+  arrayOfWords.forEach(e => {
+    if (e === "color" || e === "paint") {
+      let color = recognizers.detectColor(arrayOfWords);
+      gfx.changeColor(recognizers.detectTarget(arrayOfWords), color);
+    }
+    if (e === "move" || e === "drag" || e === "position") {
+      let direction = recognizers.detectDirection(arrayOfWords);
+      let target = recognizers.detectTarget(arrayOfWords);
+      gfx.moveElement(target, direction);
+    }
+    if (e === "increase" || e === "bigger" || e === "big") {
+      let target = recognizers.detectTarget(arrayOfWords);
+      gfx.increase(target);
+    }
+    if (e === "decrease" || e === "smaller" || e === "small") {
+      let target = recognizers.detectTarget(arrayOfWords);
+      gfx.decrease(target);
+    }
+    if (e === "duplicate" || e === "more") {
+      let target = recognizers.detectTarget(arrayOfWords);
+      gfx.duplicate(target);
+    }
+    if (e === "queue" || e === "list") {
+      isQueuing = true;
+    }
+    if (e === "execute" || e === "run" || e === "perform") {
+      isQueuing = false;
+    }
+  });
+  /*
   function execute(queue) {
     queue.forEach(command => {
       command.func.bind(command.param);
     });
   }
-
+  
   switch (command) {
     case "color":
+      alert(command);
       if (shape != null && color != null) {
         //if queue mode is enabled we don't want to run the function, just store it and it's params
         if (isQueuing) {
@@ -117,6 +125,7 @@ recognition.onresult = function(event) {
             param: [shape, direction]
           });
         } else {
+          console.log(shape, direction, gfx);
           gfx.moveElement(shape, direction);
         }
       }
@@ -167,7 +176,7 @@ recognition.onresult = function(event) {
     default:
       break;
   }
-
+*/
   // if (processedCommand[0] === "color" || processedCommand[0] === "colored") {
   //   if (processedCommand[1] === "rectangle") {
   //     gfx.changeColor("rectangle", color);
