@@ -33,6 +33,7 @@ recognition.maxAlternatives = 1;
 
 let diagnostic = document.querySelector(".output");
 let recordBtn = document.querySelector("#recordBtn");
+let queueList = document.querySelector("#queueList");
 let isRecording = false;
 let isQueuing = false;
 let commandQueue = [];
@@ -48,6 +49,26 @@ recordBtn.onclick = function() {
     recordBtn.innerHTML = "Start Recording";
   }
 };
+
+function addtoQueue(voiceCommand, fn, params) {
+  queueList.innerHTML += `<li>${voiceCommand}</li>`;
+  commandQueue.push({
+    fn,
+    params
+  });
+  console.log(`pushed ${voiceCommand} to the queue`);
+  console.log(fn, params);
+}
+
+function execute(queue) {
+  queue.forEach(command => {
+    console.log(`executing command`);
+    console.log(command);
+    command.fn(command.params.join(", "));
+  });
+  queueList.innerHTML = "";
+  commandQueue = [];
+}
 
 recognition.onresult = function(event) {
   // The SpeechRecognitionEvent results property returns a SpeechRecognitionResultList object
@@ -67,38 +88,61 @@ recognition.onresult = function(event) {
   arrayOfWords.forEach(e => {
     if (e === "color" || e === "paint") {
       let color = recognizers.detectColor(arrayOfWords);
-      gfx.changeColor(recognizers.detectTarget(arrayOfWords), color);
+      let target = recognizers.detectTarget(arrayOfWords);
+      color && target
+        ? isQueuing
+          ? addtoQueue(arrayOfWords, gfx.changeColor, [target, color])
+          : gfx.changeColor(target, color)
+        : console.warn(
+            `color not change because either ${target} or ${color} are invalid`
+          );
     }
     if (e === "move" || e === "drag" || e === "position") {
       let direction = recognizers.detectDirection(arrayOfWords);
       let target = recognizers.detectTarget(arrayOfWords);
-      gfx.moveElement(target, direction);
+      direction && target
+        ? isQueuing
+          ? addtoQueue(arrayOfWords, gfx.moveElement, [target, direction])
+          : gfx.moveElement(target, direction)
+        : console.warn(
+            `color not change because either ${target} or ${direction} are invalid`
+          );
     }
     if (e === "increase" || e === "bigger" || e === "big") {
       let target = recognizers.detectTarget(arrayOfWords);
-      gfx.increase(target);
+      target
+        ? isQueuing
+          ? addtoQueue(arrayOfWords, gfx.increase, [target])
+          : gfx.increase(target)
+        : console.warn(`target ${target} is unrecognized`);
     }
     if (e === "decrease" || e === "smaller" || e === "small") {
       let target = recognizers.detectTarget(arrayOfWords);
-      gfx.decrease(target);
+      target
+        ? isQueuing
+          ? addtoQueue(arrayOfWords, gfx.decrease, [target])
+          : gfx.decrease(target)
+        : console.warn(`target ${target} is unrecognized`);
     }
     if (e === "duplicate" || e === "more") {
       let target = recognizers.detectTarget(arrayOfWords);
-      gfx.duplicate(target);
+      target
+        ? isQueuing
+          ? addtoQueue(arrayOfWords, gfx.duplicate, [target])
+          : gfx.duplicate(target)
+        : console.warn(`target ${target} is unrecognized`);
     }
     if (e === "queue" || e === "list") {
+      console.log("queue mode enabled");
       isQueuing = true;
     }
     if (e === "execute" || e === "run" || e === "perform") {
+      console.log("queue mode disabled");
       isQueuing = false;
+      execute(commandQueue);
     }
   });
   /*
-  function execute(queue) {
-    queue.forEach(command => {
-      command.func.bind(command.param);
-    });
-  }
   
   switch (command) {
     case "color":

@@ -68,6 +68,7 @@ function getObjectArray(descriptor) {
  * @param {String} color like "red", "green", "blue" - see Fabric documentation for color names
  */
 export function changeColor(target, color) {
+  console.log("color", target, color);
   if (target === "square") {
     rectList.forEach(element => {
       element.set("fill", color);
@@ -92,7 +93,7 @@ export function changeColor(target, color) {
  * @param {String} orientation "up" "down" "left" "right"
  */
 export function moveElement(target, orientation) {
-  console.log(target, orientation);
+  console.log("move", target, orientation);
   let figureList = getObjectArray(target);
   switch (orientation) {
     case "up":
@@ -127,6 +128,7 @@ export function moveElement(target, orientation) {
  * @param {Integer} size how big or small to make the element (make the number positive or negative)
  */
 function resizeElement(target, size) {
+  console.log("resize", target, size);
   let figureList = getObjectArray(target);
   if (target === "circle") {
     figureList.forEach(figure => {
@@ -154,6 +156,7 @@ export function decrease(target) {
  * @param {*} target type of element. "rectangle", "triangle", "circle"
  */
 export function duplicate(target) {
+  console.log("duplicate", target);
   let figureList = getObjectArray(target);
 
   switch (target) {
