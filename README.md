@@ -1,3 +1,11 @@
+If you just wanna dive deep in the demos:
+
+- [CodeSandbox with Speech Recognition](https://codesandbox.io/s/wild-glade-mz6mn6j628?fontsize=14)
+- [CodeSandbox with everything](https://codesandbox.io/s/video-gesture-recognition-exercice-v57hn?fontsize=14)
+
+**NOTE: The image recognition won't work unless you add your GCP API Key - read bellow to learn more**
+
+
 ## How to run this project
 
 NOTE: this only works on Chrome
