@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html lang="en-US">
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Speech Recognition</title>
 
-<head>
-	<title>Parcel Sandbox</title>
-	<meta charset="UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta name="viewport" content="width=device-width" />
-	<title>Speech Recognition</title>
-
-	<link rel="stylesheet" href="src/styles.css" />
-	<!--[if lt IE 9]>
+    <link rel="stylesheet" href="src/styles.css" />
+    <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.22/fabric.min.js"></script>
-</head>
+    <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.22/fabric.min.js"></script>-->
+  </head>
 
-<body>
-	<h1>Speech Recognition test</h1>
-	<div id="app"></div>
+  <body>
+    <h1>Speech Recognition test</h1>
+    <div id="app"></div>
 
-	<div>
-		<p class="output"><em>...diagnostic messages</em></p>
-	</div>
-	<button id="recordBtn">Start Recording</button>
+    <div>
+      <video id="video"></video>
+    </div>
 
-	<div>
-		<canvas id="c" />
-	</div>
-	<ul id="queueList">
-	</ul>
-	<script src="src/voiceRecognition.js"></script>
-	<script src="src/graphics.js"></script>
-</body>
+    <div>
+      <p class="output"><em>...diagnostic messages</em></p>
+    </div>
+    <button id="recordBtn">Start Recording</button>
+    <button id="take-picture">takepicture</button>
 
+    <div>
+      <canvas id="c" />
+    </div>
+    <ul id="queueList"></ul>
+    <canvas id="photoRecorder" />
+    <script src="src/main.js"></script>
+  </body>
 </html>

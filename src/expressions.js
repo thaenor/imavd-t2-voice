@@ -31,7 +31,7 @@ export function detectTarget(input) {
       e === "circle" ||
       e === "ball" ||
       e === "sphere" ||
-      e === "Circumference"
+      e === "circumference"
     ) {
       return "circle";
     }

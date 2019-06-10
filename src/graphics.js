@@ -202,3 +202,49 @@ export function duplicate(target) {
   }
   canvas.renderAll();
 }
+
+export function addNewShape(shape, color) {
+  let paint = new fabric.Color(`rgb(${color.red},${color.green},${color.blue}`);
+  let s;
+  switch (shape) {
+    case "rectangle":
+      s = new fabric.Rect({
+        left: Math.floor(Math.random() * CANVAS_WIDTH + 1),
+        top: Math.floor(Math.random() * CANVAS_HEIGHT + 1),
+        fill: paint,
+        width: 20,
+        height: 20
+      });
+      rectList.push(s);
+      canvas.add(s);
+      canvas.renderAll();
+      break;
+    case "triangle":
+      s = new fabric.Triangle({
+        left: Math.floor(Math.random() * CANVAS_WIDTH + 1),
+        top: Math.floor(Math.random() * CANVAS_HEIGHT + 1),
+        fill: paint,
+        width: 20,
+        height: 20
+      });
+      rectList.push(s);
+      canvas.add(s);
+      canvas.renderAll();
+      break;
+    case "circle":
+      s = new fabric.Circle({
+        radius: Math.floor(Math.random() * 30 + 5),
+        left: Math.floor(Math.random() * CANVAS_WIDTH + 1),
+        top: Math.floor(Math.random() * CANVAS_HEIGHT + 1),
+        fill: paint,
+        width: 20,
+        height: 20
+      });
+      rectList.push(s);
+      canvas.add(s);
+      canvas.renderAll();
+      break;
+    default:
+      break;
+  }
+}
