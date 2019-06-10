@@ -2,10 +2,10 @@
 
 NOTE: this only works on Chrome
 
-step 1: Go to https://cloud.google.com/vision/docs/auth
-step 2: Read throught the tutorial - set up a project key for **"Google Cloud Vision API"**
-step 3: once you have your API key insert in `./src/GoogleAPIKEY.js` (the file just exports that constant)
-step 4: run the app normally `npm start`
+1. Go to https://cloud.google.com/vision/docs/auth
+2. Read throught the tutorial - set up a project key for **"Google Cloud Vision API"**
+3. Once you have your API key insert in `./src/GoogleAPIKEY.js` (the file just exports that constant)
+4. Run the app normally `npm start`
 
 ## Features
 
@@ -29,7 +29,6 @@ When a command is issued, it affects ALL of the corresponding symbols (i.e. all 
 These words are as follows:
 
 1. The supported commands are:
-
 - move, drag, position - to move a targets.
 - color, paint - to change the color of targets.
 - increase, bigger, big - to increase the size of targets.
@@ -38,14 +37,12 @@ These words are as follows:
 - queue, list - starts listing all the commands instead of running them right away.
 - execute, run, perform - runs all the commands in the list and empties it.
 
-the supported symbols are:
-
+2. the supported symbols are:
 - rectangle, square, squared, box
 - circle, ball, sphere, circumference
 - triangle
 
-the supported colors are:
-
+3. the supported colors are:
 - take a look at the file `./src/colors.js` - they're all listed there
 
 ### Some examples
