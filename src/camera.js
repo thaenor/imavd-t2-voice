@@ -1,5 +1,5 @@
-import { getLabelDetection, getDominantColors } from "./visionAPI";
-import { addNewShape } from "./graphics";
+import { getLabelDetection, getDominantColors, getOCR } from "./visionAPI";
+import { moveElement, resizeElement, addNewShape } from "./graphics";
 
 export const cameraID = 415250;
 export const photoCanvasWidth = 200;
@@ -52,29 +52,62 @@ export async function initiateCamera() {
       var img = canvas.toDataURL("image/jpeg").split(",")[1];
       getLabelDetection(img).then(labels => {
         getDominantColors(img).then(color => {
-          drawSomething(labels, color);
+          getOCR(img).then(text => {
+            drawSomething(labels, color, text);
+          });
         });
       });
     }, 3000);
   });
 }
 
-function drawSomething(labels, color) {
-  labels.forEach(label => {
-    console.log(label.description);
-    switch (label.description) {
-      case "Rectangle":
-        console.log("detected rectangle");
-        addNewShape("rectangle", color);
+function drawSomething(labels, color, textCommand) {
+  if (labels && color) {
+    labels.forEach(label => {
+      console.log(label.description);
+      switch (label.description) {
+        case "Rectangle":
+          addNewShape("rectangle", color);
+          textCommand && executeCommand(textCommand, "square");
+          break;
+        case "Triangle":
+          addNewShape("triangle", color);
+          textCommand && executeCommand(textCommand, "triangle");
+          break;
+        case "Circle":
+          addNewShape("circle", color);
+          textCommand && executeCommand(textCommand, "circle");
+          break;
+        default:
+          break;
+      }
+    });
+  }
+}
+
+function executeCommand(command, shape) {
+  command.split(" ");
+  command.forEach(element => {
+    switch (element) {
+      case "move left":
+        moveElement(shape, "left");
         break;
-      case "Triangle":
-        console.log("detected tri");
-        addNewShape("triangle", color);
+      case "move right":
+        moveElement(shape, "right");
         break;
-      case "Circle":
-        console.log("detected circ");
-        addNewShape("circle", color);
+      case "move up":
+        moveElement(shape, "up");
         break;
+      case "move down":
+        moveElement(shape, "down");
+        break;
+      case "big":
+        resizeElement(shape, 10);
+        break;
+      case "small":
+        resizeElement(shape, -5);
+        break;
+
       default:
         break;
     }

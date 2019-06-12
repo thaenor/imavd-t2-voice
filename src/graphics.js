@@ -64,7 +64,7 @@ function getObjectArray(descriptor) {
 
 /**
  * Changes color
- * @param {String} target type of element. "rectangle", "triangle", "circle"
+ * @param {String} target type of element. "square", "triangle", "circle"
  * @param {String} color like "red", "green", "blue" - see Fabric documentation for color names
  */
 export function changeColor(target, color) {
@@ -204,7 +204,7 @@ export function duplicate(target) {
 }
 
 export function addNewShape(shape, color) {
-  let paint = new fabric.Color(`rgb(${color.red},${color.green},${color.blue}`);
+  let paint = `rgb(${color.color.red},${color.color.green},${color.color.blue}`;
   let s;
   switch (shape) {
     case "rectangle":
@@ -218,6 +218,7 @@ export function addNewShape(shape, color) {
       rectList.push(s);
       canvas.add(s);
       canvas.renderAll();
+      changeColor("square", paint);
       break;
     case "triangle":
       s = new fabric.Triangle({
@@ -230,6 +231,7 @@ export function addNewShape(shape, color) {
       rectList.push(s);
       canvas.add(s);
       canvas.renderAll();
+      changeColor("triangle", paint);
       break;
     case "circle":
       s = new fabric.Circle({
@@ -243,6 +245,7 @@ export function addNewShape(shape, color) {
       rectList.push(s);
       canvas.add(s);
       canvas.renderAll();
+      changeColor("circle", paint);
       break;
     default:
       break;
