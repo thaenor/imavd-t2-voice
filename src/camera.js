@@ -1,5 +1,6 @@
 import { getLabelDetection, getDominantColors, getOCR } from "./visionAPI";
 import { moveElement, resizeElement, addNewShape } from "./graphics";
+import { APIKEY } from "./GoogleAPIKEY";
 
 export const cameraID = 415250;
 export const photoCanvasWidth = 200;
@@ -36,28 +37,33 @@ export async function initiateCamera() {
   canvas.height = photoCanvasHeight;
   let ctx = canvas.getContext("2d");
 
-  /*   let timer = setInterval(() => {
-    ctx.drawImage(video, 0, 0, 200, 150);
-  }, 3000);
-
-  setTimeout(() => {
-    var img = canvas.toDataURL("image/jpeg"); //.split(",")[1];
-    console.log(img);
-    clearInterval(timer);
-  }, 9000); */
-
-  document.querySelector("#take-picture").addEventListener("click", e => {
-    setTimeout(() => {
-      ctx.drawImage(video, 0, 0, photoCanvasWidth, photoCanvasHeight);
-      var img = canvas.toDataURL("image/jpeg").split(",")[1];
-      getLabelDetection(img).then(labels => {
-        getDominantColors(img).then(color => {
-          getOCR(img).then(text => {
-            drawSomething(labels, color, text);
-          });
-        });
-      });
+  if (APIKEY) {
+    document
+      .querySelector("#take-picture")
+      .setAttribute("style", "visibility: hidden");
+    let timer = setInterval(() => {
+      makeRequest(ctx, video, canvas);
     }, 3000);
+
+    setTimeout(() => {
+      clearInterval(timer);
+    }, 12000);
+  } else {
+    document.querySelector("#take-picture").addEventListener("click", e => {
+      makeRequest(ctx, video, canvas);
+    });
+  }
+}
+
+function makeRequest(ctx, video, canvas) {
+  ctx.drawImage(video, 0, 0, photoCanvasWidth, photoCanvasHeight);
+  var img = canvas.toDataURL("image/jpeg").split(",")[1];
+  getLabelDetection(img).then(labels => {
+    getDominantColors(img).then(color => {
+      getOCR(img).then(text => {
+        drawSomething(labels, color, text);
+      });
+    });
   });
 }
 
