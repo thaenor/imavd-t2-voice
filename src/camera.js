@@ -43,7 +43,7 @@ export function initiateCamera() {
       .setAttribute("style", "visibility: hidden");
     let timer = setInterval(() => {
       makeRequest(ctx, video, canvas);
-    }, 3000);
+    }, 6000);
 
     setTimeout(() => {
       clearInterval(timer);

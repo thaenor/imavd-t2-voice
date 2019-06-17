@@ -1,7 +1,7 @@
 import axios from "axios";
 import { APIKEY } from "./GoogleAPIKEY";
 
-export async function getLabelDetection(img) {
+export function getLabelDetection(img) {
   return axios
     .post(`https://vision.googleapis.com/v1/images:annotate?key=${APIKEY}`, {
       requests: [
@@ -27,7 +27,7 @@ export async function getLabelDetection(img) {
     });
 }
 
-export async function getDominantColors(img) {
+export function getDominantColors(img) {
   return axios
     .post(`https://vision.googleapis.com/v1/images:annotate?key=${APIKEY}`, {
       requests: [
@@ -54,7 +54,7 @@ export async function getDominantColors(img) {
     });
 }
 
-export async function getOCR(img) {
+export function getOCR(img) {
   return axios
     .post(`https://vision.googleapis.com/v1/images:annotate?key=${APIKEY}`, {
       requests: [
