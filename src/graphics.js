@@ -203,6 +203,14 @@ export function duplicate(target) {
   canvas.renderAll();
 }
 
+export function rotate(shape, angle) {
+  let figureList = getObjectArray(shape);
+  figureList.forEach(figure => {
+    figure.angle = figure.angle + 45;
+    canvas.renderAll();
+  });
+}
+
 export function addNewShape(shape, color) {
   let paint = `rgb(${color.color.red},${color.color.green},${color.color.blue}`;
   let s;

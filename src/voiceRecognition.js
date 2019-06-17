@@ -11,7 +11,7 @@ const grammar =
   "#JSGF V1.0; grammar colors; public <color> = " + colors.join(" | ") + " ;";
 
 const commandGrammar =
-  "#JSGF V1.0; grammar command; public <command> = color | move | increase | decrease | duplicate | queue | execute ;";
+  "#JSGF V1.0; grammar command; public <command> = color | move | increase | decrease | rotate | roll | rotation | duplicate | queue | execute ;";
 
 const directionGrammar =
   "#JSGF V1.0; grammar command; public <command> = up | down | left | right;";
@@ -131,6 +131,24 @@ recognition.onresult = function(event) {
           ? addtoQueue(arrayOfWords, gfx.duplicate, [target])
           : gfx.duplicate(target)
         : console.warn(`target ${target} is unrecognized`);
+    }
+    if( e === "rotate" || e === "roll" || e === "rotation") {
+      let target = recognizers.detectTarget(arrayOfWords);
+      let direction = recognizers.detectDirection(arrayOfWords);
+      if(direction === 'left') {
+        target
+        ? isQueuing
+          ? addtoQueue(arrayOfWords, gfx.rotate, [target, 45])
+          : gfx.rotate(target, 45)
+        : console.warn(`target ${target} is unrecognized`);
+      } else {
+        target
+        ? isQueuing
+          ? addtoQueue(arrayOfWords, gfx.rotate, [target, -45])
+          : gfx.rotate(target, -45)
+        : console.warn(`target ${target} is unrecognized`);
+      }
+      
     }
     if (e === "queue" || e === "list") {
       console.log("queue mode enabled");

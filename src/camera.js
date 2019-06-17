@@ -1,12 +1,12 @@
 import { getLabelDetection, getDominantColors, getOCR } from "./visionAPI";
-import { moveElement, resizeElement, addNewShape } from "./graphics";
+import { moveElement, resizeElement, addNewShape, rotate } from "./graphics";
 import { APIKEY } from "./GoogleAPIKEY";
 
 export const cameraID = 415250;
 export const photoCanvasWidth = 200;
 export const photoCanvasHeight = 150;
 
-export async function initiateCamera() {
+export function initiateCamera() {
   const constraints = {
     audio: false,
     video: {
@@ -107,6 +107,12 @@ function executeCommand(command, shape) {
       case "move down":
         moveElement(shape, "down");
         break;
+      case "rotate right":
+        rotate(shape, -45);
+      break;
+      case "rotate left":
+        rotate(shape, 45);
+      break;
       case "big":
         resizeElement(shape, 10);
         break;
