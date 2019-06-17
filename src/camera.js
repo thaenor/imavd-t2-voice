@@ -37,7 +37,7 @@ export function initiateCamera() {
   canvas.height = photoCanvasHeight;
   let ctx = canvas.getContext("2d");
 
-  if (APIKEY) {
+  if (false) { //APIKEY
     document
       .querySelector("#take-picture")
       .setAttribute("style", "visibility: hidden");
@@ -68,6 +68,8 @@ function makeRequest(ctx, video, canvas) {
 }
 
 function drawSomething(labels, color, textCommand) {
+  //labels.push({description: 'Rectangle'});
+  //textCommand = "ROTATE";
   if (labels && color) {
     labels.forEach(label => {
       console.log(label.description);
@@ -92,25 +94,18 @@ function drawSomething(labels, color, textCommand) {
 }
 
 function executeCommand(command, shape) {
-  command.split(" ");
-  command.forEach(element => {
+  var res = command.toLowerCase();
+  let wordArray = res.split(" ");
+  wordArray.forEach(element => {
+    console.log(element)
     switch (element) {
-      case "move left":
+      case "move":
         moveElement(shape, "left");
         break;
-      case "move right":
-        moveElement(shape, "right");
-        break;
-      case "move up":
-        moveElement(shape, "up");
-        break;
-      case "move down":
-        moveElement(shape, "down");
-        break;
-      case "rotate right":
+      case "rotate":
         rotate(shape, -45);
       break;
-      case "rotate left":
+      case "rotate":
         rotate(shape, 45);
       break;
       case "big":
