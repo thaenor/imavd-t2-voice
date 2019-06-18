@@ -1,11 +1,12 @@
 import { getLabelDetection, getDominantColors, getOCR } from "./visionAPI";
-import { moveElement, resizeElement, addNewShape, rotate } from "./graphics";
+import { moveElement, increase, decrease, addNewShape, rotate } from "./graphics";
 import { APIKEY } from "./GoogleAPIKEY";
 import { injectSquare, injectTri, injectCirc} from "./cheats";
 
 export const cameraID = 415250;
 export const photoCanvasWidth = 200;
 export const photoCanvasHeight = 150;
+export let ctx, video, canvas;
 
 export function initiateCamera() {
   const constraints = {
@@ -17,8 +18,6 @@ export function initiateCamera() {
       deviceId: cameraID
     }
   };
-
-  let video;
 
   navigator.mediaDevices
     .getUserMedia(constraints)
@@ -33,10 +32,10 @@ export function initiateCamera() {
       console.log(err.name + ": " + err.message);
     }); // always check for errors at the end.
 
-  let canvas = document.getElementById("photoRecorder");
+  canvas = document.getElementById("photoRecorder");
   canvas.width = photoCanvasWidth;
   canvas.height = photoCanvasHeight;
-  let ctx = canvas.getContext("2d");
+  ctx = canvas.getContext("2d");
 
   if (APIKEY && false) {
     document
@@ -56,7 +55,7 @@ export function initiateCamera() {
   }
 }
 
-function makeRequest(ctx, video, canvas) {
+export function makeRequest(ctx, video, canvas) {
   ctx.drawImage(video, 0, 0, photoCanvasWidth, photoCanvasHeight);
   var img = canvas.toDataURL("image/jpeg").split(",")[1];
   getLabelDetection(img).then(labels => {
@@ -82,6 +81,7 @@ function injector(labels) {
 
 function drawSomething(labels, color, textCommand) {
   injector(labels);
+  textCommand = textCommand && textCommand.replace(/(\r\n|\n|\r)/gm, "");
   if (labels && color) {
     labels.forEach(label => {
       console.log(label.description);
@@ -121,10 +121,10 @@ function executeCommand(command, shape) {
         rotate(shape, 45);
       break;
       case "big":
-        resizeElement(shape, 10);
+        increase(shape);
         break;
       case "small":
-        resizeElement(shape, -5);
+        decrease(shape);
         break;
 
       default:

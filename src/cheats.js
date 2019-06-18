@@ -1,3 +1,4 @@
+import { makeRequest, ctx, video, canvas } from './camera';
 export let injectSquare = false;
 export let injectTri = false;
 export let injectCirc = false;
@@ -41,6 +42,9 @@ document.addEventListener(
         } else {
             toggleVisibility('.circ', false);
         }
+        break;
+      case "Enter" || " ":
+          makeRequest(ctx, video, canvas);
         break;
       default:
         break;

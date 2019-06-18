@@ -137,7 +137,7 @@ function resizeElement(target, size) {
   } else {
     figureList.forEach(figure => {
       figure.set("width", figure.width + size);
-      figure.set("height", figure.height + 5);
+      figure.set("height", figure.height + size);
     });
   }
   canvas.renderAll();
