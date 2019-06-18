@@ -8,3 +8,30 @@ body {
 .hidden {
   visibility: hidden;
 }
+
+.sqr {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  height: 3px;
+  width: 3px;
+  background-color: salmon;
+}
+
+.tri {
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  height: 3px;
+  width: 3px;
+  background-color: darkgreen;
+}
+
+.circ {
+  position: absolute;
+  top: 10px;
+  left: 50px;
+  height: 3px;
+  width: 3px;
+  background-color: blue;
+}

@@ -1,6 +1,7 @@
 import { getLabelDetection, getDominantColors, getOCR } from "./visionAPI";
 import { moveElement, resizeElement, addNewShape, rotate } from "./graphics";
 import { APIKEY } from "./GoogleAPIKEY";
+import { injectSquare, injectTri, injectCirc} from "./cheats";
 
 export const cameraID = 415250;
 export const photoCanvasWidth = 200;
@@ -37,7 +38,7 @@ export function initiateCamera() {
   canvas.height = photoCanvasHeight;
   let ctx = canvas.getContext("2d");
 
-  if (false) { //APIKEY
+  if (APIKEY && false) {
     document
       .querySelector("#take-picture")
       .setAttribute("style", "visibility: hidden");
@@ -67,9 +68,20 @@ function makeRequest(ctx, video, canvas) {
   });
 }
 
+function injector(labels) {
+  if(injectSquare) {
+    return labels.push({description: 'Rectangle'});
+  }
+  if(injectTri) {
+    return labels.push({description: 'Triangle'});
+  }
+  if(injectCirc) {
+    return labels.push({description: 'Circle'});
+  }
+}
+
 function drawSomething(labels, color, textCommand) {
-  //labels.push({description: 'Rectangle'});
-  //textCommand = "ROTATE";
+  injector(labels);
   if (labels && color) {
     labels.forEach(label => {
       console.log(label.description);
