@@ -24,7 +24,7 @@ body {
   left: 30px;
   height: 3px;
   width: 3px;
-  background-color: darkgreen;
+  background-color: green;
 }
 
 .circ {
@@ -33,5 +33,5 @@ body {
   left: 50px;
   height: 3px;
   width: 3px;
-  background-color: blue;
+  background-color: yellow;
 }
