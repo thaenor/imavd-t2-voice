@@ -236,7 +236,7 @@ export function addNewShape(shape, color) {
         width: 20,
         height: 20
       });
-      rectList.push(s);
+      triList.push(s);
       canvas.add(s);
       canvas.renderAll();
       changeColor("triangle", paint);
@@ -250,7 +250,7 @@ export function addNewShape(shape, color) {
         width: 20,
         height: 20
       });
-      rectList.push(s);
+      circList.push(s);
       canvas.add(s);
       canvas.renderAll();
       changeColor("circle", paint);
